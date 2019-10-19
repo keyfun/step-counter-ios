@@ -14,6 +14,7 @@ struct ContentView: View {
 
     let activityManager = CMMotionActivityManager()
     let pedometer = CMPedometer()
+
     @State var isStarted = false
     @State var startDate: Date? = nil
     @State var endDate: Date? = nil
@@ -41,12 +42,22 @@ struct ContentView: View {
         }.onAppear {
             print("onAppear")
             // TODO: check previous Start Date if any
+            guard let previousStartDate = AppUtils.getStartDate() else {
+                return
+            }
+            self.onStart(previousStartDate: previousStartDate)
+            self.updateStepsCount()
         }
     }
 
-    func onStart() {
+    func onStart(previousStartDate: Date? = nil) {
         isStarted = true
-        startDate = Date()
+        if previousStartDate != nil {
+            startDate = previousStartDate
+        } else {
+            startDate = Date()
+            AppUtils.saveStartDate(startDate!)
+        }
         endDate = nil
         activityType = ""
         stepsCount = "0"
@@ -59,6 +70,7 @@ struct ContentView: View {
         endDate = Date()
         stopUpdating()
         updateStepsCount()
+        AppUtils.clearUserData()
     }
 
     func startUpdating() {
@@ -98,9 +110,11 @@ struct ContentView: View {
 
     func updateStepsCount() {
         guard let startDate = startDate else { return }
-        guard let endDate = endDate else { return }
-
-        pedometer.queryPedometerData(from: startDate, to: endDate) { (data, error) in
+        var toDate = Date()
+        if endDate != nil {
+            toDate = endDate!
+        }
+        pedometer.queryPedometerData(from: startDate, to: toDate) { (data, error) in
             if let error = error {
                 self.on(error: error)
             } else if let pedometerData = data {
