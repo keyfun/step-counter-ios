@@ -119,6 +119,8 @@ struct ContentView: View {
                 self.activityType = "Running"
             } else if activity.automotive {
                 self.activityType = "Automotive"
+            } else if activity.cycling {
+                self.activityType = "Cycling"
             }
         }
     }
