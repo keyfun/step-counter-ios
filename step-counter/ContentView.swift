@@ -18,7 +18,7 @@ struct ContentView: View {
     @State var startDate: Date? = nil
     @State var endDate: Date? = nil
     @State var activityType: String = ""
-    @State var stepsCount: String = ""
+    @State var stepsCount: String = "0"
 
     var body: some View {
         NavigationView {
@@ -40,8 +40,7 @@ struct ContentView: View {
             }.navigationBarTitle("Step Counter")
         }.onAppear {
             print("onAppear")
-            guard let startDate = self.startDate else { return }
-            self.updateStepsCountLabelUsing(startDate: startDate)
+            // TODO: check previous Start Date if any
         }
     }
 
@@ -57,6 +56,7 @@ struct ContentView: View {
         isStarted = false
         endDate = Date()
         stopUpdating()
+        updateStepsCount()
     }
 
     func startUpdating() {
@@ -94,12 +94,15 @@ struct ContentView: View {
         print(error)
     }
 
-    func updateStepsCountLabelUsing(startDate: Date) {
-        pedometer.queryPedometerData(from: startDate, to: Date()) { (data, error) in
+    func updateStepsCount() {
+        guard let startDate = startDate else { return }
+        guard let endDate = endDate else { return }
+
+        pedometer.queryPedometerData(from: startDate, to: endDate) { (data, error) in
             if let error = error {
                 self.on(error: error)
             } else if let pedometerData = data {
-                print(pedometerData)
+//                print(pedometerData)
                 self.stepsCount = String(describing: pedometerData.numberOfSteps)
             }
         }
@@ -121,10 +124,11 @@ struct ContentView: View {
     }
 
     func startCountingSteps() {
-        pedometer.startUpdates(from: Date()) { pedometerData, error in
+        guard let startDate = startDate else { return }
+        pedometer.startUpdates(from: startDate) { pedometerData, error in
             guard let pedometerData = pedometerData, error == nil else { return }
-            print("startCountingSteps")
-            print(pedometerData)
+//            print("startCountingSteps")
+//            print(pedometerData)
             self.stepsCount = pedometerData.numberOfSteps.stringValue
         }
     }
