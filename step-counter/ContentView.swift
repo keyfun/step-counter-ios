@@ -16,6 +16,7 @@ struct ContentView: View {
     let pedometer = CMPedometer()
     @State var isStarted = false
     @State var startDate: Date? = nil
+    @State var endDate: Date? = nil
     @State var activityType: String = ""
     @State var stepsCount: String = ""
 
@@ -31,7 +32,8 @@ struct ContentView: View {
                 }) {
                     Text("\(isStarted ? "Stop" : "Start")").frame(minWidth: 0, maxWidth: .infinity)
                 }.padding(.all)
-                Text("\(startDate?.description ?? " - ")").padding()
+                Text("Start Time = \(AppUtils.getFormattedDate(startDate))").padding()
+                Text("End Time = \(AppUtils.getFormattedDate(endDate))").padding()
                 Text("activityType = \(activityType)").padding()
                 Text("stepCount = \(stepsCount)").padding()
                 Spacer()
@@ -46,13 +48,14 @@ struct ContentView: View {
     func onStart() {
         isStarted = true
         startDate = Date()
+        endDate = nil
         checkAuthorizationStatus()
         startUpdating()
     }
 
     func onStop() {
         isStarted = false
-        startDate = nil
+        endDate = Date()
         stopUpdating()
     }
 

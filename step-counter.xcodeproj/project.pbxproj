@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F406BEE235ADF8E0038C9D8 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F406BED235ADF8E0038C9D8 /* AppUtils.swift */; };
+		3F406BF0235AE1B00038C9D8 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F406BEF235AE1B00038C9D8 /* DateExtension.swift */; };
 		3FA11D8C235A183D0068DF06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA11D8B235A183D0068DF06 /* AppDelegate.swift */; };
 		3FA11D8E235A183D0068DF06 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA11D8D235A183D0068DF06 /* SceneDelegate.swift */; };
 		3FA11D90235A183D0068DF06 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA11D8F235A183D0068DF06 /* ContentView.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F406BED235ADF8E0038C9D8 /* AppUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
+		3F406BEF235AE1B00038C9D8 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		3FA11D88235A183D0068DF06 /* step-counter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "step-counter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA11D8B235A183D0068DF06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FA11D8D235A183D0068DF06 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +63,8 @@
 				3FA11D8B235A183D0068DF06 /* AppDelegate.swift */,
 				3FA11D8D235A183D0068DF06 /* SceneDelegate.swift */,
 				3FA11D8F235A183D0068DF06 /* ContentView.swift */,
+				3F406BED235ADF8E0038C9D8 /* AppUtils.swift */,
+				3F406BEF235AE1B00038C9D8 /* DateExtension.swift */,
 				3FA11D91235A18400068DF06 /* Assets.xcassets */,
 				3FA11D96235A18400068DF06 /* LaunchScreen.storyboard */,
 				3FA11D99235A18400068DF06 /* Info.plist */,
@@ -147,6 +153,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA11D8C235A183D0068DF06 /* AppDelegate.swift in Sources */,
+				3F406BF0235AE1B00038C9D8 /* DateExtension.swift in Sources */,
+				3F406BEE235ADF8E0038C9D8 /* AppUtils.swift in Sources */,
 				3FA11D8E235A183D0068DF06 /* SceneDelegate.swift in Sources */,
 				3FA11D90235A183D0068DF06 /* ContentView.swift in Sources */,
 			);
