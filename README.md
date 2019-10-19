@@ -1,2 +1,7 @@
 # step-counter-ios
-Swift Step Counter
+Swift Step Counter Demo
+
+Using SwiftUI for layout
+
+## Features
+- Keep steps count until click `Stop`
