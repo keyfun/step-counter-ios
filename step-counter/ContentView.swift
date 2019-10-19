@@ -48,6 +48,8 @@ struct ContentView: View {
         isStarted = true
         startDate = Date()
         endDate = nil
+        activityType = ""
+        stepsCount = "0"
         checkAuthorizationStatus()
         startUpdating()
     }
