@@ -9,35 +9,49 @@
 import SwiftUI
 import UIKit
 import CoreMotion
-import Dispatch
 
 struct ContentView: View {
 
     let activityManager = CMMotionActivityManager()
     let pedometer = CMPedometer()
-    @State var shouldStartUpdating = false
+    @State var isStarted = false
     @State var startDate: Date? = nil
+    @State var activityType: String = ""
+    @State var stepsCount: String = ""
 
     var body: some View {
         NavigationView {
-            Text("Step Counter")
+            VStack {
+                Button(action: {
+                    if self.isStarted {
+                        self.onStop()
+                    } else {
+                        self.onStart()
+                    }
+                }) {
+                    Text("\(isStarted ? "Stop" : "Start")").frame(minWidth: 0, maxWidth: .infinity)
+                }.padding(.all)
+                Text("\(startDate?.description ?? " - ")").padding()
+                Text("activityType = \(activityType)").padding()
+                Text("stepCount = \(stepsCount)").padding()
+                Spacer()
+            }.navigationBarTitle("Step Counter")
         }.onAppear {
             print("onAppear")
-//            guard let startDate = self.startDate else { return }
-//            self.updateStepsCountLabelUsing(startDate: startDate)
-            self.onStart()
+            guard let startDate = self.startDate else { return }
+            self.updateStepsCountLabelUsing(startDate: startDate)
         }
     }
 
     func onStart() {
-//        startButton.setTitle("Stop", for: .normal)
+        isStarted = true
         startDate = Date()
         checkAuthorizationStatus()
         startUpdating()
     }
 
     func onStop() {
-//        startButton.setTitle("Start", for: .normal)
+        isStarted = false
         startDate = nil
         stopUpdating()
     }
@@ -46,13 +60,13 @@ struct ContentView: View {
         if CMMotionActivityManager.isActivityAvailable() {
             startTrackingActivityType()
         } else {
-//            activityTypeLabel.text = "Not available"
+            activityType = "Not available"
         }
 
         if CMPedometer.isStepCountingAvailable() {
             startCountingSteps()
         } else {
-//            stepsCountLabel.text = "Not available"
+            stepsCount = "Not available"
         }
     }
 
@@ -61,8 +75,8 @@ struct ContentView: View {
         case CMAuthorizationStatus.denied:
             print("Not available")
             onStop()
-//            activityTypeLabel.text = "Not available"
-//            stepsCountLabel.text = "Not available"
+            activityType = "Not available"
+            stepsCount = "Not available"
         default: break
         }
     }
@@ -74,7 +88,7 @@ struct ContentView: View {
     }
 
     func on(error: Error) {
-        //handle error
+        print(error)
     }
 
     func updateStepsCountLabelUsing(startDate: Date) {
@@ -83,9 +97,7 @@ struct ContentView: View {
                 self.on(error: error)
             } else if let pedometerData = data {
                 print(pedometerData)
-//                DispatchQueue.main.async {
-//                    self.stepsCountLabel.text = String(describing: pedometerData.numberOfSteps)
-//                }
+                self.stepsCount = String(describing: pedometerData.numberOfSteps)
             }
         }
     }
@@ -93,28 +105,24 @@ struct ContentView: View {
     func startTrackingActivityType() {
         activityManager.startActivityUpdates(to: OperationQueue.main) { activity in
             guard let activity = activity else { return }
-            print(activity)
-            //            DispatchQueue.main.async {
-            //                if activity.walking {
-            //                    self?.activityTypeLabel.text = "Walking"
-            //                } else if activity.stationary {
-            //                    self?.activityTypeLabel.text = "Stationary"
-            //                } else if activity.running {
-            //                    self?.activityTypeLabel.text = "Running"
-            //                } else if activity.automotive {
-            //                    self?.activityTypeLabel.text = "Automotive"
-            //                }
-            //            }
+            if activity.walking {
+                self.activityType = "Walking"
+            } else if activity.stationary {
+                self.activityType = "Stationary"
+            } else if activity.running {
+                self.activityType = "Running"
+            } else if activity.automotive {
+                self.activityType = "Automotive"
+            }
         }
     }
 
     func startCountingSteps() {
         pedometer.startUpdates(from: Date()) { pedometerData, error in
             guard let pedometerData = pedometerData, error == nil else { return }
+            print("startCountingSteps")
             print(pedometerData)
-//            DispatchQueue.main.async {
-//                self?.stepsCountLabel.text = pedometerData.numberOfSteps.stringValue
-//            }
+            self.stepsCount = pedometerData.numberOfSteps.stringValue
         }
     }
 }
